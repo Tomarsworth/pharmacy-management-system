@@ -2,24 +2,25 @@ import java.util.Scanner;
 
 public class InputUtils {
 
-    static public int readInt(Scanner scanner){
+    public static int readInt(Scanner scanner){
         while(true){
             try{
                 String line = scanner.nextLine();
                 return Integer.parseInt(line);      // выход из цикла
             } catch(NumberFormatException e) {
-                System.out.println("Введите целое число: " + e.getMessage());
+                System.err.println("Ошибка. Введите целое число: " + e.getMessage());
             }
         }
     }
 
-    static public double readDouble(Scanner scanner){
+    public static double readDouble(Scanner scanner){
         while(true){
             try{
                 String line = scanner.nextLine();
-                return Double.parseDouble(line);
+                String sanitizedLine = line.replace(",", ".");
+                return Double.parseDouble(sanitizedLine);
             } catch(NumberFormatException e){
-                System.out.println("Ошибка: введите число (дробное — через точку или запятую).");
+                System.err.println("Ошибка. Введите число (дробное — через точку или запятую): " + e.getMessage());
             }
         }
     }
