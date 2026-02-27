@@ -3,30 +3,31 @@ import java.util.List;
 import java.util.ArrayList;
 
 public class FileManager {
-    private String filePath;
+
+    private final String filePath;
 
     public FileManager(String filePath) {
         this.filePath = filePath;
     }
 
     public void saveToFile(List<Medicine> medicines){
-        try(FileWriter writer = new FileWriter(filePath)){
+        try(PrintWriter writer = new PrintWriter(filePath)){
             for(Medicine medicine : medicines){
-                writer.write(medicine.getName() + ";"
+                writer.println(medicine.getName() + ";"
                         + medicine.getPrice() + ";"
                         + medicine.getAmount() + ";"
-                        + medicine.getShelfLife() + "\n");
+                        + medicine.getShelfLife());
             }
             System.out.println("Данные сохранены в файл: " + filePath);
         } catch(IOException e){
-            System.out.println("Ошибка при сохранении в файл: " + e.getMessage());
+            System.err.println("Ошибка при сохранении в файл: " + e.getMessage());
         }
     }
 
     public List<Medicine> loadFromFile(){
         List<Medicine> medicines = new ArrayList<>();       // создаём объект класса ArrayList (список)
-
         File file = new File(filePath);
+
         if(!file.exists()) return medicines;                // проверка существования файла
 
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))){
@@ -34,17 +35,23 @@ public class FileManager {
             while((line = reader.readLine()) != null){
                 String[] parts = line.split(";");
 
-                if (parts.length != 4) continue;            // проверка на битые данные
+                if(parts.length == 4){
+                    try{
+                        String name = parts[0].trim();      // trim() – удаление лишних пробелов с обеих сторон
+                        double price = Double.parseDouble(parts[1].trim());
+                        int amount = Integer.parseInt(parts[2].trim());
+                        int shelfLife = Integer.parseInt(parts[3].trim());
 
-                String name = parts[0];
-                double price = Double.parseDouble(parts[1]);
-                int amount = Integer.parseInt(parts[2]);
-                int shelfLife = Integer.parseInt(parts[3]);
-
-                medicines.add(new Medicine(name, price, amount, shelfLife));
+                        medicines.add(new Medicine(name, price, amount, shelfLife));
+                    } catch(NumberFormatException e){
+                        System.err.println("Пропущена строка с ошибкой в числах: " + line);
+                    }
+                } else{
+                    System.err.println("Пропущена некорректная строка (неверное кол-во полей): " + line);
+                }
             }
-        }catch (IOException e){
-            System.out.println("Ошибка при чтении из файла: " + e.getMessage());
+        } catch(IOException e){
+            System.err.println("Ошибка при чтении файла: " + e.getMessage());
         }
         return medicines;
     }

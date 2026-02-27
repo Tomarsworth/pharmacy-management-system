@@ -1,4 +1,5 @@
 public class Medicine {
+
     private String name;            // название лекарства
     private double price;           // цена
     private int amount;             // количество лекарств
