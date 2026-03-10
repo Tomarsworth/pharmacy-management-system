@@ -1,3 +1,8 @@
+package app.ui;
+
+import app.service.PharmacyService;
+import app.util.InputUtils;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
@@ -8,12 +13,10 @@ public class ConsoleUI {
 
     private final PharmacyService pharmacyService;
     private final Scanner scanner;
-    private final Session session;
     private final Map<String, Runnable> commands = new HashMap<>();
 
-    public ConsoleUI(PharmacyService pharmacyService, Session session, Scanner scanner){
+    public ConsoleUI(PharmacyService pharmacyService, Scanner scanner){
         this.pharmacyService = pharmacyService;
-        this.session = session;
         this.scanner = scanner;
 
         commands.put("1", this::handleShowMedicines);
@@ -38,6 +41,8 @@ public class ConsoleUI {
 
     private void showMenu() {
         System.out.println();
+        pharmacyService.getCurrentUserStatus();
+        /*
         User user = pharmacyService.getCurrentUser();
 
         if (user != null) {
@@ -47,7 +52,7 @@ public class ConsoleUI {
         } else {
             System.out.println("Текущий пользователь: вход не выполнен");
         }
-
+        */
         System.out.println("""
                 ===== АПТЕКА =====
                 1 – показать список лекарств

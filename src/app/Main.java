@@ -1,3 +1,8 @@
+import app.service.PharmacyService;
+import app.session.Session;
+import app.storage.FileManager;
+import app.ui.ConsoleUI;
+
 import java.util.Scanner;
 
 public class Main {

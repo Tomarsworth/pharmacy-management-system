@@ -1,3 +1,5 @@
+import app.model.Medicine;
+
 import java.io.*;
 import java.util.List;
 import java.util.ArrayList;

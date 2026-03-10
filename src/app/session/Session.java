@@ -1,3 +1,5 @@
+import app.model.User;
+
 public class Session {
 
     private User currentUser;       // текущий юзер
