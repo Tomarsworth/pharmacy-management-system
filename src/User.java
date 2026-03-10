@@ -1,7 +1,7 @@
 public class User {
 
-    private String username;
-    private Role role;
+    private final String username;
+    private final Role role;
 
     public User(String username, Role role){
         this.username = username;

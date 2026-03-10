@@ -20,7 +20,7 @@ public class FileManager {
             }
             System.out.println("Данные сохранены в файл: " + filePath);
         } catch(IOException e){
-            System.err.println("Ошибка при сохранении в файл: " + e.getMessage());
+            System.out.println("Ошибка при сохранении в файл: " + e.getMessage());
         }
     }
 
@@ -44,14 +44,14 @@ public class FileManager {
 
                         medicines.add(new Medicine(name, price, amount, shelfLife));
                     } catch(NumberFormatException e){
-                        System.err.println("Пропущена строка с ошибкой в числах: " + line);
+                        System.out.println("Пропущена строка с ошибкой в числах: " + line);
                     }
                 } else{
-                    System.err.println("Пропущена некорректная строка (неверное кол-во полей): " + line);
+                    System.out.println("Пропущена некорректная строка (неверное кол-во полей): " + line);
                 }
             }
         } catch(IOException e){
-            System.err.println("Ошибка при чтении файла: " + e.getMessage());
+            System.out.println("Ошибка при чтении файла: " + e.getMessage());
         }
         return medicines;
     }

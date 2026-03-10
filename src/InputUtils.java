@@ -1,6 +1,7 @@
 import java.util.Scanner;
 
-public class InputUtils {
+public final class InputUtils {
+    private InputUtils(){}
 
     public static int readInt(Scanner scanner){
         while(true){
@@ -8,7 +9,7 @@ public class InputUtils {
                 String line = scanner.nextLine();
                 return Integer.parseInt(line);      // выход из цикла
             } catch(NumberFormatException e) {
-                System.err.println("Ошибка. Введите целое число: " + e.getMessage());
+                System.out.println("Ошибка. Введите целое число: " + e.getMessage());
             }
         }
     }
@@ -20,7 +21,7 @@ public class InputUtils {
                 String sanitizedLine = line.replace(",", ".");
                 return Double.parseDouble(sanitizedLine);
             } catch(NumberFormatException e){
-                System.err.println("Ошибка. Введите число (дробное — через точку или запятую): " + e.getMessage());
+                System.out.println("Ошибка. Введите число (дробное — через точку или запятую): " + e.getMessage());
             }
         }
     }

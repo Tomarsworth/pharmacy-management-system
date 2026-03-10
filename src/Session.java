@@ -22,6 +22,7 @@ public class Session {
         return currentUser;
     }
 
+    // под вопросом
     public long getLoginTime(){
         return loginTime;
     }

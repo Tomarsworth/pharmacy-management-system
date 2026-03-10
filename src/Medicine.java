@@ -12,23 +12,23 @@ public class Medicine {
         this.shelfLife = shelfLife;
     }
 
-    public String getName() {
+    public String getName(){
         return name;
     }
-    public void setPrice(double price) {
+    public void setPrice(double price){
         this.price = price;
     }
-    public double getPrice() {
+    public double getPrice(){
         return price;
     }
-    public int getAmount() {
+    public int getAmount(){
         return amount;
     }
-    public int getShelfLife() {
+    public int getShelfLife(){
         return shelfLife;
     }
     // метод уменьшения количества
-    public void reduceAmount(int reduce) {
+    public void reduceAmount(int reduce){
         this.amount = this.amount - reduce;
     }
 
