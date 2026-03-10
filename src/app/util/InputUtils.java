@@ -1,3 +1,5 @@
+package app.util;
+
 import java.util.Scanner;
 
 public final class InputUtils {

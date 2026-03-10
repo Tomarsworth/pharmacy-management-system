@@ -1,3 +1,5 @@
+package app;
+
 import app.service.PharmacyService;
 import app.session.Session;
 import app.storage.FileManager;
@@ -14,7 +16,7 @@ public class Main {
 
             PharmacyService pharmacy = new PharmacyService(fileManager, session);
 
-            ConsoleUI ui = new ConsoleUI(pharmacy, session, scanner);
+            ConsoleUI ui = new ConsoleUI(pharmacy, scanner);
             ui.start();
         }
     }

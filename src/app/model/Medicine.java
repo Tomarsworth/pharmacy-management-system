@@ -1,3 +1,5 @@
+package app.model;
+
 public class Medicine {
 
     private String name;            // название лекарства

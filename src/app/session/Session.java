@@ -1,3 +1,5 @@
+package app.session;
+
 import app.model.User;
 
 public class Session {
@@ -20,6 +22,7 @@ public class Session {
         return currentUser != null;
     }
 
+    // текущий юзер
     public User getCurrentUser(){
         return currentUser;
     }

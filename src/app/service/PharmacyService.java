@@ -1,6 +1,10 @@
+package app.service;
+
 import app.model.Medicine;
 import app.model.Role;
 import app.model.User;
+import app.storage.FileManager;
+import app.session.Session;
 
 import java.util.List;
 
@@ -84,15 +88,25 @@ public class PharmacyService{
         }
         return null;
     }
-
+    /*
     public User getCurrentUser(){
         return session.getCurrentUser();
     }
-
+    */
+    public String getCurrentUserStatus(){
+        if (!session.isLoggedIn()){
+            return "Текущий пользователь: вход не выполнен";
+        }
+        User user = session.getCurrentUser();
+        return "Текущий пользователь: "
+                + user.getUsername()
+                + " (" + user.getRole() + ")";
+    }
+    /*
     public boolean isLoggedIn(){
         return session.isLoggedIn();
     }
-
+    */
     public void login(String username, String roleString){
         Role role;
 
