@@ -1,12 +1,11 @@
 import java.io.*;
 import java.util.List;
-import java.util.ArrayList;
 
 public class PharmacyService{
 
-    private List<Medicine> medicines;           // используем интерфейс List для гибкости
-    FileManager fileManager;
-    private Session session;
+    private final FileManager fileManager;
+    private final List<Medicine> medicines;
+    private final Session session;
 
     public PharmacyService(FileManager fileManager, Session session){
         this.fileManager = fileManager;
@@ -25,6 +24,11 @@ public class PharmacyService{
         medicines.add(medicine);
         fileManager.saveToFile(medicines);
         System.out.println("Лекарство добавлено.");
+    }
+
+    public void addMedicine(String name, double price, int amount, int shelfLife){
+        Medicine medicine = new Medicine(name, price, amount, shelfLife);
+        addMedicine(medicine);
     }
 
     public void removeMedicine(String name){
@@ -76,6 +80,31 @@ public class PharmacyService{
             if(medicine.getName().equalsIgnoreCase(name)) return medicine;
         }
         return null;
+    }
+
+    public User getCurrentUser(){
+        return session.getCurrentUser();
+    }
+
+    public boolean isLoggedIn(){
+        return session.isLoggedIn();
+    }
+
+    public void login(String username, String roleString){
+        Role role;
+
+        if (roleString.equalsIgnoreCase("admin")) {
+            role = Role.ADMIN;
+        } else {
+            role = Role.CASHIER;
+        }
+
+        User user = new User(username, role);
+        session.login(user);
+    }
+
+    public void logout(){
+        session.logout();
     }
 
     private boolean isAdmin(){
