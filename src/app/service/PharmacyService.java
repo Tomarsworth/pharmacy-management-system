@@ -73,7 +73,7 @@ public class PharmacyService{
     }
 
     public void showAllMedicines(){
-        if (medicines.isEmpty()){
+        if(medicines.isEmpty()){
             System.out.println("Склад пуст.");
             return;
         }

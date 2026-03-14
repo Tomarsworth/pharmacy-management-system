@@ -13,6 +13,7 @@ public final class InputUtils {
             } catch(NumberFormatException e) {
                 System.out.println("Ошибка. Введите целое число: " + e.getMessage());
             }
+            scanner.close();
         }
     }
 
@@ -25,6 +26,7 @@ public final class InputUtils {
             } catch(NumberFormatException e){
                 System.out.println("Ошибка. Введите число (дробное — через точку или запятую): " + e.getMessage());
             }
+            scanner.close();
         }
     }
 }

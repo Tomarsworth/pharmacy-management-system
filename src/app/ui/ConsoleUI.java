@@ -28,8 +28,6 @@ public class ConsoleUI {
         commands.put("0", this::handleExit);
     }
 
-
-
     // основной цикл
     public void start(){
         while(running){
@@ -42,17 +40,7 @@ public class ConsoleUI {
     private void showMenu() {
         System.out.println();
         pharmacyService.getCurrentUserStatus();
-        /*
-        User user = pharmacyService.getCurrentUser();
 
-        if (user != null) {
-            System.out.println("Текущий пользователь: "
-                    + user.getUsername()
-                    + " (" + user.getRole() + ")");
-        } else {
-            System.out.println("Текущий пользователь: вход не выполнен");
-        }
-        */
         System.out.println("""
                 ===== АПТЕКА =====
                 1 – показать список лекарств
