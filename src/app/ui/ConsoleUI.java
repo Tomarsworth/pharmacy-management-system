@@ -1,6 +1,7 @@
 package app.ui;
 
-import app.service.PharmacyService;
+import app.service.AuthService;
+import app.service.MedicineService;
 import app.util.InputUtils;
 
 import java.util.HashMap;
@@ -11,12 +12,14 @@ public class ConsoleUI {
 
     private boolean running = true;
 
-    private final PharmacyService pharmacyService;
+    private final MedicineService medicineService;
+    private final AuthService authService;
     private final Scanner scanner;
     private final Map<String, Runnable> commands = new HashMap<>();
 
-    public ConsoleUI(PharmacyService pharmacyService, Scanner scanner){
-        this.pharmacyService = pharmacyService;
+    public ConsoleUI(MedicineService medicineService, AuthService authService, Scanner scanner){
+        this.medicineService = medicineService;
+        this.authService = authService;
         this.scanner = scanner;
 
         commands.put("1", this::handleShowMedicines);
@@ -39,7 +42,7 @@ public class ConsoleUI {
 
     private void showMenu() {
         System.out.println();
-        pharmacyService.getCurrentUserStatus();
+        authService.getCurrentUserStatus();
 
         System.out.println("""
                 ===== АПТЕКА =====
@@ -62,7 +65,7 @@ public class ConsoleUI {
 
     private void handleShowMedicines(){
         System.out.println("\nСписок лекарств: ");
-        pharmacyService.showAllMedicines();
+        medicineService.showAllMedicines();
     }
     private void handleSellMedicine(){
         System.out.print("\nВведите название: ");
@@ -71,7 +74,7 @@ public class ConsoleUI {
         System.out.print("Введите количество: ");
         int amount = InputUtils.readInt(scanner);
 
-        pharmacyService.sellMedicine(name, amount);
+        medicineService.sellMedicine(name, amount);
     }
     private void handleAddMedicine(){
         System.out.print("\nВведите название: ");
@@ -86,13 +89,13 @@ public class ConsoleUI {
         System.out.print("Введите срок годности: ");
         int shelfLife = InputUtils.readInt(scanner);
 
-        pharmacyService.addMedicine(name, price, amount, shelfLife);
+        medicineService.addMedicine(name, price, amount, shelfLife);
     }
     private void handleRemoveMedicine(){
         System.out.print("\nВведите название: ");
         String name = scanner.nextLine();
 
-        pharmacyService.removeMedicine(name);
+        medicineService.removeMedicine(name);
     }
     private void handleLogin(){
         System.out.print("\nВведите имя пользователя: ");
@@ -101,11 +104,11 @@ public class ConsoleUI {
         System.out.print("Введите роль (admin/cashier): ");
         String role = scanner.nextLine();
 
-        pharmacyService.login(username, role);
+        authService.login(username, role);
     }
     private void handleLogout(){
         System.out.println("\nВы вышли из аккаунта.");
-        pharmacyService.logout();
+        authService.logout();
     }
     private void handleExit(){
         System.out.println("\nВы вышли из программы.");

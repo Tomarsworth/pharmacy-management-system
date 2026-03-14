@@ -1,0 +1,87 @@
+package app.service;
+
+import app.model.Medicine;
+import app.storage.FileManager;
+
+import java.util.List;
+
+public class MedicineService {
+    private final FileManager fileManager;
+    private final List<Medicine> medicines;
+    private final AuthService authService;
+
+    public MedicineService(FileManager fileManager, AuthService authService){
+        this.fileManager = fileManager;
+        this.authService = authService;
+        this.medicines = fileManager.loadFromFile();
+    }
+
+    public void addMedicine(Medicine medicine){
+        if(!authService.isAdmin()) return;
+
+        Medicine existing = findMedicine(medicine.getName());
+        if(existing != null){
+            System.out.println("Лекарство уже существует.");
+            return;                             // для выхода из метода
+        }
+        medicines.add(medicine);
+        fileManager.saveToFile(medicines);
+        System.out.println("Лекарство добавлено.");
+    }
+
+    public void addMedicine(String name, double price, int amount, int shelfLife){
+        Medicine medicine = new Medicine(name, price, amount, shelfLife);
+        addMedicine(medicine);
+    }
+
+    public void removeMedicine(String name){
+        if(!authService.isAdmin()) return;
+
+        Medicine medicine = findMedicine(name);
+        if(medicine == null){
+            System.out.println("Лекарство не найдено.");
+            return;                             // для выхода из метода
+        }
+        medicines.remove(medicine);
+        fileManager.saveToFile(medicines);
+        System.out.println("Лекарство удалено");
+    }
+
+    public void sellMedicine(String name, int amount){
+        if (!authService.canSell()) return;
+
+        Medicine medicine = findMedicine(name);
+        if(medicine == null){
+            System.out.println("Лекарство не найдено.");
+            return;
+        }
+        if(amount <= 0){
+            System.out.println("Количество должно быть больше нуля.");
+            return;
+        }
+        if(medicine.getAmount() < amount){
+            System.out.println("Недостаточно лекарств на складе.");
+            return;
+        }
+        medicine.reduceAmount(amount);
+        fileManager.saveToFile(medicines);
+        System.out.println(medicine.getName() + " продан в количестве " + amount + " шт.");
+    }
+
+    public void showAllMedicines(){
+        if(medicines.isEmpty()){
+            System.out.println("Склад пуст.");
+            return;
+        }
+        for (Medicine medicine : medicines){
+            System.out.println(medicine);
+        }
+    }
+
+    public Medicine findMedicine(String name){
+        for(Medicine medicine : medicines){
+            if(medicine.getName().equalsIgnoreCase(name)) return medicine;
+        }
+        return null;
+    }
+}

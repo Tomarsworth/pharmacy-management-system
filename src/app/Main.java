@@ -1,6 +1,7 @@
 package app;
 
-import app.service.PharmacyService;
+import app.service.AuthService;
+import app.service.MedicineService;
 import app.session.Session;
 import app.storage.FileManager;
 import app.ui.ConsoleUI;
@@ -11,12 +12,15 @@ public class Main {
     public static void main(String[] args){
 
         try(Scanner scanner = new Scanner(System.in)){
+
             Session session = new Session();
+            AuthService authService = new AuthService(session);
+
             FileManager fileManager = new FileManager("data.txt");
+            MedicineService medicineService = new MedicineService(fileManager, authService);
 
-            PharmacyService pharmacy = new PharmacyService(fileManager, session);
+            ConsoleUI ui = new ConsoleUI(medicineService, authService, scanner);
 
-            ConsoleUI ui = new ConsoleUI(pharmacy, scanner);
             ui.start();
         }
     }
