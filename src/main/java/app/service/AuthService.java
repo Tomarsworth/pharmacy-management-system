@@ -24,13 +24,14 @@ public class AuthService {
 
     public void login(String username, String roleString){
         Role role;
-
-        if (roleString.equalsIgnoreCase("admin")) {
+        if(roleString.equalsIgnoreCase("admin")){
             role = Role.ADMIN;
-        } else{
+        } else if(roleString.equalsIgnoreCase("cashier")){
             role = Role.CASHIER;
+        } else{
+            System.out.println("Роль должна быть admin или cashier.");
+            return;
         }
-
         User user = new User(username, role);
         session.login(user);
     }

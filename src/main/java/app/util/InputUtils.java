@@ -29,4 +29,16 @@ public final class InputUtils {
             scanner.close();
         }
     }
+
+    public static long readLong(Scanner scanner) {
+        while(true){
+            try{
+                String line = scanner.nextLine();
+                return Long.parseLong(line);      // выход из цикла
+            } catch(NumberFormatException e) {
+                System.out.println("Ошибка. Введите целое число: " + e.getMessage());
+            }
+            scanner.close();
+        }
+    }
 }

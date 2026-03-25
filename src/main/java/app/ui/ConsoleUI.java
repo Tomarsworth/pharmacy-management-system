@@ -42,17 +42,17 @@ public class ConsoleUI {
 
     private void showMenu() {
         System.out.println();
-        authService.getCurrentUserStatus();
+        System.out.println(authService.getCurrentUserStatus());
 
         System.out.println("""
                 ===== АПТЕКА =====
-                1 – показать список лекарств
-                2 – продать лекарство
-                3 – добавить лекарство
-                4 – удалить лекарство
-                5 – войти / сменить пользователя
-                6 – выйти из аккаунта
-                0 – выйти из программы
+                1 - показать список лекарств
+                2 - продать лекарство
+                3 - добавить лекарство
+                4 - удалить лекарство
+                5 - войти / сменить пользователя
+                6 - выйти из аккаунта
+                0 - выйти из программы
                 """);
 
         System.out.print("Выбор: ");
@@ -68,13 +68,13 @@ public class ConsoleUI {
         medicineService.showAllMedicines();
     }
     private void handleSellMedicine(){
-        System.out.print("\nВведите название: ");
-        String name = scanner.nextLine();
+        System.out.print("\nВведите id лекарства: ");
+        long id = InputUtils.readLong(scanner);
 
         System.out.print("Введите количество: ");
         int amount = InputUtils.readInt(scanner);
 
-        medicineService.sellMedicine(name, amount);
+        medicineService.sellMedicine(id, amount);
     }
     private void handleAddMedicine(){
         System.out.print("\nВведите название: ");
@@ -92,10 +92,10 @@ public class ConsoleUI {
         medicineService.addMedicine(name, price, amount, shelfLife);
     }
     private void handleRemoveMedicine(){
-        System.out.print("\nВведите название: ");
-        String name = scanner.nextLine();
+        System.out.print("\nВведите id лекарства: ");
+        long id = InputUtils.readLong(scanner);
 
-        medicineService.removeMedicine(name);
+        medicineService.removeMedicine(id);
     }
     private void handleLogin(){
         System.out.print("\nВведите имя пользователя: ");

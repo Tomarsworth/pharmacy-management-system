@@ -2,23 +2,38 @@ package app.model;
 
 public class Medicine {
 
+    private long id;
     private String name;            // название лекарства
     private double price;           // цена
     private int amount;             // количество лекарств
     private int shelfLife;          // срок годности
 
+    // для строки из UI
     public Medicine(String name, double price, int amount, int shelfLife){
+        this.id = 0;
         this.name = name;
         this.price = price;
         this.amount = amount;
         this.shelfLife = shelfLife;
     }
 
+    // для строки из DB
+    public Medicine(long id, String name, double price, int amount, int shelfLife){
+        this.id = id;
+        this.name = name;
+        this.price = price;
+        this.amount = amount;
+        this.shelfLife = shelfLife;
+    }
+
+    public long getId(){
+        return id;
+    }
+    public void setId(long id){
+        this.id = id;
+    }
     public String getName(){
         return name;
-    }
-    public void setPrice(double price){
-        this.price = price;
     }
     public double getPrice(){
         return price;
@@ -36,9 +51,12 @@ public class Medicine {
 
     @Override
     public String toString(){
-        return getName()
+        return getId()
+                + " | "+ getName()
                 + " | цена: " + getPrice()
                 + " | кол-во: " + getAmount()
                 + " | срок: " + getShelfLife() + " мес.";
     }
+
+
 }

@@ -1,4 +1,4 @@
-package app.storage;
+package app.storage.file;
 
 import app.model.Medicine;
 

@@ -1,19 +1,20 @@
 package app.service;
 
 import app.model.Medicine;
-import app.storage.FileManager;
+import app.repository.MedicineRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MedicineService {
-    private final FileManager fileManager;
-    private final List<Medicine> medicines;
+    private final MedicineRepository medicineRepository;
     private final AuthService authService;
+    private final List<Medicine> medicines = new ArrayList<>();
 
-    public MedicineService(FileManager fileManager, AuthService authService){
-        this.fileManager = fileManager;
+    public MedicineService(MedicineRepository medicineRepository, AuthService authService){
+        this.medicineRepository = medicineRepository;
         this.authService = authService;
-        this.medicines = fileManager.loadFromFile();
+        this.medicines.addAll(medicineRepository.findAll());
     }
 
     public void addMedicine(Medicine medicine){
@@ -24,8 +25,9 @@ public class MedicineService {
             System.out.println("Лекарство уже существует.");
             return;                             // для выхода из метода
         }
+        long id = medicineRepository.insert(medicine);
+        medicine.setId(id);
         medicines.add(medicine);
-        fileManager.saveToFile(medicines);
         System.out.println("Лекарство добавлено.");
     }
 
@@ -34,23 +36,24 @@ public class MedicineService {
         addMedicine(medicine);
     }
 
-    public void removeMedicine(String name){
-        if(!authService.isAdmin()) return;
-
-        Medicine medicine = findMedicine(name);
+    public void removeMedicine(long id){
+        if(!authService.isAdmin()){
+            return;
+        }
+        Medicine medicine = findMedicineById(id);
         if(medicine == null){
             System.out.println("Лекарство не найдено.");
-            return;                             // для выхода из метода
+            return;
         }
+        medicineRepository.deleteById(id);
         medicines.remove(medicine);
-        fileManager.saveToFile(medicines);
         System.out.println("Лекарство удалено");
     }
 
-    public void sellMedicine(String name, int amount){
-        if (!authService.canSell()) return;
+    public void sellMedicine(long id, int amount){
+        if(!authService.canSell()) return;
 
-        Medicine medicine = findMedicine(name);
+        Medicine medicine = findMedicineById(id);
         if(medicine == null){
             System.out.println("Лекарство не найдено.");
             return;
@@ -64,7 +67,7 @@ public class MedicineService {
             return;
         }
         medicine.reduceAmount(amount);
-        fileManager.saveToFile(medicines);
+        medicineRepository.update(medicine);
         System.out.println(medicine.getName() + " продан в количестве " + amount + " шт.");
     }
 
@@ -81,6 +84,15 @@ public class MedicineService {
     public Medicine findMedicine(String name){
         for(Medicine medicine : medicines){
             if(medicine.getName().equalsIgnoreCase(name)) return medicine;
+        }
+        return null;
+    }
+
+    public Medicine findMedicineById(long id){
+        for(Medicine m : medicines){
+            if(m.getId() == id){
+                return m;
+            }
         }
         return null;
     }
