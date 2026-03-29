@@ -58,7 +58,7 @@ public class ConsoleUI {
         System.out.print("Выбор: ");
     }
 
-    public void handleChoice (String choice){
+    public void handleChoice(String choice){
         Runnable action = commands.getOrDefault(choice, this::handleUnknownChoice);
         action.run();
     }

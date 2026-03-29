@@ -10,29 +10,29 @@ import java.util.Optional;
 
 public class PostgresMedicineRepository implements MedicineRepository{
     @Override
-    public List<Medicine> findAll() {
+    public List<Medicine> findAll(){
         String sql = "SELECT id, name, price, amount, shelf_life FROM medicines ORDER BY id";
         List<Medicine> list = new ArrayList<>();
-        try (Connection conn = JdbcConnectionProvider.getConnection();
+        try(Connection conn = JdbcConnectionProvider.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
-            while (rs.next()) {
+             ResultSet rs = ps.executeQuery()){
+            while(rs.next()){
                 list.add(mapRow(rs));
             }
-        } catch (SQLException e) {
+        } catch(SQLException e){
             throw new RuntimeException("Ошибка чтения лекарств: " + e.getMessage(), e);
         }
         return list;
     }
 
     @Override
-    public Optional<Medicine> findById(long id) {
+    public Optional<Medicine> findById(long id){
         String sql = "SELECT id, name, price, amount, shelf_life FROM medicines WHERE id = ?";
-        try (Connection conn = JdbcConnectionProvider.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try(Connection conn = JdbcConnectionProvider.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)){
             ps.setLong(1, id);
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
+            try(ResultSet rs = ps.executeQuery()){
+                if(rs.next()){
                     return Optional.of(mapRow(rs));
                 }
             }
@@ -43,21 +43,21 @@ public class PostgresMedicineRepository implements MedicineRepository{
     }
 
     @Override
-    public long insert(Medicine medicine) {
+    public long insert(Medicine medicine){
         String sql = "INSERT INTO medicines (name, price, amount, shelf_life) VALUES (?, ?, ?, ?)";
-        try (Connection conn = JdbcConnectionProvider.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+        try(Connection conn = JdbcConnectionProvider.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)){
             ps.setString(1, medicine.getName());
             ps.setDouble(2, medicine.getPrice());
             ps.setInt(3, medicine.getAmount());
             ps.setInt(4, medicine.getShelfLife());
             ps.executeUpdate();
-            try (ResultSet keys = ps.getGeneratedKeys()) {
-                if (keys.next()) {
+            try(ResultSet keys = ps.getGeneratedKeys()){
+                if(keys.next()){
                     return keys.getLong(1);
                 }
             }
-        } catch (SQLException e) {
+        } catch(SQLException e){
             throw new RuntimeException("Ошибка вставки: " + e.getMessage(), e);
         }
         throw new RuntimeException("Не удалось получить id после INSERT");
@@ -74,24 +74,24 @@ public class PostgresMedicineRepository implements MedicineRepository{
             ps.setInt(4, medicine.getShelfLife());
             ps.setLong(5, medicine.getId());
             ps.executeUpdate();
-        } catch (SQLException e) {
+        } catch(SQLException e){
             throw new RuntimeException("Ошибка обновления: " + e.getMessage(), e);
         }
     }
 
     @Override
-    public void deleteById(long id) {
+    public void deleteById(long id){
         String sql = "DELETE FROM medicines WHERE id = ?";
-        try (Connection conn = JdbcConnectionProvider.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try(Connection conn = JdbcConnectionProvider.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)){
             ps.setLong(1, id);
             ps.executeUpdate();
-        } catch (SQLException e) {
+        } catch(SQLException e){
             throw new RuntimeException("Ошибка удаления: " + e.getMessage(), e);
         }
     }
 
-    private Medicine mapRow(ResultSet rs) throws SQLException {
+    private Medicine mapRow(ResultSet rs) throws SQLException{
         return new Medicine(
                 rs.getLong("id"),
                 rs.getString("name"),
